@@ -39,7 +39,7 @@ export class UserService extends BasePaginateService<
   async registerUser(data: RegisterUserRequestDTO): Promise<User> {
     try {
       const { avatarUrl, color, rate, ...userDetails } = data;
-      const hashedPassword = await bcrypt.hash(data.password as string, 10);
+      const hashedPassword = await bcrypt.hash(data.password, 10);
 
       return await this.model.create({
         data: {

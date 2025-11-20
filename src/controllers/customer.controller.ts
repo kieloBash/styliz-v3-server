@@ -1,12 +1,12 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    ParseIntPipe,
-    Patch,
-    Post,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { CreateCustomerDto } from 'src/requests/create';
 import { UpdateCustomerDto } from 'src/requests/update';
