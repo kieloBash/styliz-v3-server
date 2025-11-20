@@ -24,7 +24,9 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  shifts    Shift[]
+
+  shifts   Shift[]
+  invoices Invoice[]
 }
 
 model UserProfile {
@@ -34,10 +36,12 @@ model UserProfile {
   color     String?
   rate      Float?  @default(400)
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 enum ShiftType {
@@ -61,8 +65,96 @@ model Shift {
   type      ShiftType
   status    ShiftStatus @default(ASSIGNED)
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Customer {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  invoices Invoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum InvoiceStatus {
+  JOYJOY
+  RTS
+  COMPLETED
+}
+
+model Invoice {
+  id Int @id @default(autoincrement())
+
+  items    Item[]
+  subTotal Int
+  freebies Int?          @default(0)
+  status   InvoiceStatus @default(COMPLETED)
+
+  dateDelivered DateTime
+  dateIssued    DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  sellerId Int
+  seller   User @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  platformId Int
+  platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@index([dateDelivered])
+  @@index([dateIssued])
+  @@index([customerId])
+  @@index([sellerId])
+  @@index([platformId])
+}
+
+model ItemCategory {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  items       Item[]
+  quickPrices Int[]
+  color       String?
+  icon        String?
+}
+
+enum ItemStatus {
+  CANCELLED
+  JOYJOY
+  RTS
+  COMPLETED
+}
+
+model Item {
+  id        Int @id @default(autoincrement())
+  invoiceId Int
+
+  price      Int
+  categoryId Int
+  status     ItemStatus @default(COMPLETED)
+
+  invoice  Invoice      @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  category ItemCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([invoiceId])
+  @@index([categoryId])
+}
+
+model Platform {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  invoices Invoice[]
 }

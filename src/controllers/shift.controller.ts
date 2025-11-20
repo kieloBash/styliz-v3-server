@@ -1,20 +1,19 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    ParseIntPipe,
-    Patch,
-    Post,
-    Query,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
 import { Shift } from 'generated/prisma';
-import {
-    CreateShiftDto,
-    GetMonthlyShiftsDto,
-    UpdateShiftDto,
-} from 'src/requests';
+import { CreateShiftDto } from 'src/requests/create';
+import { GetMonthlyShiftsDto } from 'src/requests/find';
+import { UpdateShiftDto } from 'src/requests/update';
+
 import { ShiftService } from 'src/services/shift.service';
 
 @Controller('api/shifts')

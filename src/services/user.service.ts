@@ -11,7 +11,7 @@ import { BasePaginateService } from 'src/base/base-paginate.service';
 import { ErrorException } from 'src/common/exception/error.exception';
 import { PrismaService } from 'src/common/prisma.service';
 import { RegisterUserRequestDTO } from 'src/requests';
-import { FindUsersQueryFilters } from 'src/requests/find.users';
+import { FindUsersQueryFilters } from 'src/requests/find/find.users';
 @Injectable()
 export class UserService extends BasePaginateService<
   User,

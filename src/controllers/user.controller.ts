@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, Query } from '@nestjs/common';
 import { IsNumberString } from 'class-validator';
-import { FindUsersQueryFilters } from 'src/requests';
+import { FindUsersQueryFilters } from 'src/requests/find';
 import { UserService } from 'src/services/user.service';
 
 @Controller('api/users')
