@@ -8,8 +8,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  SELLER
+  ADMIN
+}
+
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
+
+  userProfile UserProfile?
+  role        Role         @default(SELLER)
+  password    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  shifts    Shift[]
+}
+
+model UserProfile {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @unique
+  avatarUrl String?
+  color     String?
+  rate      Float?  @default(400)
+
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ShiftType {
+  MORNING
+  AFTERNOON
+  EVENING
+}
+
+model Shift {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  startTime DateTime
+  endTime   DateTime?
+  type      ShiftType
+
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
