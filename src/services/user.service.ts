@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Prisma, User } from 'generated/prisma';
 import { BasePaginateService } from 'src/base/base-paginate.service';
+import { ErrorException } from 'src/common/exception/error.exception';
 import { PrismaService } from 'src/common/prisma.service';
 import { RegisterUserRequestDTO } from 'src/requests';
 import { FindUsersQueryFilters } from 'src/requests/find.users';
@@ -64,7 +65,7 @@ export class UserService extends BasePaginateService<
         // Unique constraint failed
         throw new ConflictException('User with this email already exists');
       }
-      throw error;
+      throw new ErrorException(error.message);
     }
   }
 
@@ -102,7 +103,7 @@ export class UserService extends BasePaginateService<
         // P2025 = "Record to delete does not exist."
         throw new NotFoundException(`User with ID ${userId} not found`);
       }
-      throw error;
+      throw new ErrorException(error.message);
     }
   }
 }
