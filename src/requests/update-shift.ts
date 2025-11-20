@@ -1,6 +1,6 @@
 // dto/update-shift.dto.ts
 import { IsDateString, IsEnum, IsInt, IsOptional, Min } from 'class-validator';
-import { ShiftType } from 'generated/prisma';
+import { ShiftStatus, ShiftType } from 'generated/prisma';
 
 export class UpdateShiftDto {
   @IsOptional()
@@ -19,4 +19,8 @@ export class UpdateShiftDto {
   @IsOptional()
   @IsEnum(ShiftType)
   type?: ShiftType;
+
+  @IsOptional()
+  @IsEnum(ShiftStatus)
+  status: ShiftStatus;
 }
