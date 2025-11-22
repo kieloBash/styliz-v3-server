@@ -72,7 +72,7 @@ export class UserService extends BasePaginateService<
   async loginUser(
     email: string,
     password: string,
-  ): Promise<{ user: User; token: string }> {
+  ): Promise<{ access_token: string; sub: string; role: string }> {
     const user = await this.model.findUnique({ where: { email } });
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -86,7 +86,7 @@ export class UserService extends BasePaginateService<
     const payload = { sub: user.id, email: user.email };
     const token = this.jwtService.sign(payload, { expiresIn: '1h' });
 
-    return { user, token };
+    return { access_token: token, sub: user.id, role: user.role };
   }
 
   async deleteUser(userId: number): Promise<User> {
